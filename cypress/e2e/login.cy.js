@@ -26,14 +26,24 @@ describe('TestLC', () => {
     cy.url().should('include', '/cp');  
   })
 
-  afterEach(() => {
-  Cy.log("Открытие модалки пользователя")
-  cy.get('div[class="ml-3 relative"]').click();
+after(() => {
+  cy.get('div.ml-3.relative').then($el => {
+    const state = $el.attr('data-headlessui-state');
 
-  Cy.log('Нажатие на кнопку "Выйти"')
-  cy.get('a[id="headlessui-menu-item-:re:"]').click();
+    if (state !== 'open') {
+      cy.log("Меню закрыто, открываем...");
+      cy.wrap($el).click();
+    } else {
+      cy.log("Меню уже открыто, кликаем не нужно");
+    }
+  });
 
-  
+  // Ждём пока меню откроется и кнопка станет видимой
+  cy.get('a[id="headlessui-menu-item-:re:"]')
+    .should('be.visible')
+    .click();
+
   cy.url().should('include', '/');
 });
+
  });     
