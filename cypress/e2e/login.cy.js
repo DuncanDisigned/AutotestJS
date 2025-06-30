@@ -27,23 +27,15 @@ describe('TestLC', () => {
   })
 
 after(() => {
-  cy.get('div.ml-3.relative').then($el => {
-    const state = $el.attr('data-headlessui-state');
+  // Открываем меню (просто кликаем по иконке пользователя)
+  cy.get('[class="h-8 w-8 rounded-full"]').click();
 
-    if (state !== 'open') {
-      cy.log("Меню закрыто, открываем...");
-      cy.wrap($el).click();
-    } else {
-      cy.log("Меню уже открыто, кликаем не нужно");
-    }
-  });
+  // Кликаем по кнопке "Выйти"
+  cy.get('a[role="menuitem"]').contains('Выход').click();
 
-  // Ждём пока меню откроется и кнопка станет видимой
-  cy.get('a[id="headlessui-menu-item-:re:"]')
-    .should('be.visible')
-    .click();
-
+  // Проверяем, что пользователь вышел (URL содержит '/')
   cy.url().should('include', '/');
+  cy.pause();
 });
 
  });     
