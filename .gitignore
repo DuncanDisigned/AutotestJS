@@ -1,0 +1,20 @@
+# Cypress output
+cypress/screenshots/
+cypress/videos/
+
+# Logs
+logs/
+*.log
+
+# Node
+node_modules/
+
+# Editor
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db
+
+dataLog.js
