@@ -1,4 +1,4 @@
-describe('TestLC', () => {
+describe('Login', () => {
   beforeEach(() => {
     cy.fixture('dataLog').as('creds');
   });
@@ -24,18 +24,14 @@ describe('TestLC', () => {
 
     cy.log('Вход выполнен!');
     cy.url().should('include', '/cp');  
-  })
+ 
+    cy.log('Нажатие на иконку фрофиля');
+    cy.get('[class="h-8 w-8 rounded-full"]', {timeout: 5000}).click();
 
-after(() => {
-  // Открываем меню (просто кликаем по иконке пользователя)
-  cy.get('[class="h-8 w-8 rounded-full"]').click();
-
-  // Кликаем по кнопке "Выйти"
-  cy.get('a[role="menuitem"]').contains('Выход').click();
-
-  // Проверяем, что пользователь вышел (URL содержит '/')
-  cy.url().should('include', '/');
-  cy.pause();
+    cy.log('Нажатие на кнопку "Выход"');
+    cy.get('a[role="menuitem"]').contains('Выход').click();
+    cy.url().should('include', '/');
+    cy.log("Тест выполнен!");
+    })
+  ;
 });
-
- });     
