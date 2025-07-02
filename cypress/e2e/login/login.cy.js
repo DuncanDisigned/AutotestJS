@@ -1,37 +1,29 @@
-describe('Login', () => {
-  beforeEach(() => {
-    cy.fixture('dataLog').as('creds');
+import { LoginPage } from '../../support/pages/LoginPage';
+import { InvalidLoginPage } from '../../support/pages/InvalidLoginPage';
+import { faker } from '@faker-js/faker';
+
+describe('Login Page', () => {
+  describe('Авторизация с валидными данными', () => {
+    const loginPage = new LoginPage();
+
+    beforeEach(() => {
+      cy.fixture('dataLog').as('creds');
+    });
+
+    it('Успешный логин', function () {
+      loginPage.login(this.creds.email, this.creds.password);
+      loginPage.assertLoginSuccess();
+    });
   });
 
-  it('Вход на сайт.', function() {
-    cy.visit('/');
+  describe('Авторизация с невалидными данными', () => {
+    const invalidLoginPage = new InvalidLoginPage();
 
-    cy.log("Ввод почты");
-    cy.get('input[id="email"]')
-      .type(this.creds.email);
-    
-    cy.log("Ввод ппароля");
-    cy.get('input[id="password"]')
-      .type(this.creds.password);
-    
-    cy.log("Отметка чекбокса");
-    cy.get('input[id="remember-me"]')
-      .click();
+    it('Появление алёрта', () => {
+      const email = faker.internet.email();
+      const password = faker.internet.password();
 
-    cy.log('Нажатие на кнопку "Войти"');
-    cy.get('button[data-test-id="submit_button"]')
-      .click();
-
-    cy.log('Вход выполнен!');
-    cy.url().should('include', '/cp');  
- 
-    cy.log('Нажатие на иконку фрофиля');
-    cy.get('[class="h-8 w-8 rounded-full"]', {timeout: 5000}).click();
-
-    cy.log('Нажатие на кнопку "Выход"');
-    cy.get('a[role="menuitem"]').contains('Выход').click();
-    cy.url().should('include', '/');
-    cy.log("Тест выполнен!");
-    })
-  ;
+      invalidLoginPage.loginWithInvalidCreds(email, password);
+    });
+  });
 });
