@@ -1,7 +1,11 @@
+import { ROUTES } from "../routes";
+
 export class LoginPage {
   visit() {
-    cy.visit('/');
+    cy.visit(ROUTES.login);
   }
+
+ 
 
   fillEmail(email) {
     cy.log("Ввод почты");
@@ -33,12 +37,13 @@ export class LoginPage {
     cy.get('[class="h-8 w-8 rounded-full"]', { timeout: 5000 }).click();
   }
 
-  logout() {
-    cy.log('Нажатие на кнопку "Выход"');
-    cy.get('a[role="menuitem"]').contains('Выход').click();
+  adminPanel() {
+    cy.log('Переход в панель администратора"');
+    cy.get('a[role="menuitem"]').contains('Панель администратора').click();
     cy.url().should('include', '/');
-    cy.log("Выход выполнен");
-  }
+    cy.log("Вход в паненель администратора выполнен");
+  } 
+
 
   login(email, password) {
     this.visit();
@@ -46,6 +51,8 @@ export class LoginPage {
     this.fillPassword(password);
     this.checkRememberMe();
     this.submit();
-    this.assertLoginSuccess();
+    this.openProfileMenu();
+    this.adminPanel();
+    
   }
 }

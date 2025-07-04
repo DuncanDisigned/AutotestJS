@@ -1,7 +1,10 @@
+import { ROUTES } from "../routes";
+
 export class InvalidLoginPage {
   visit() {
-    cy.visit('/');
+    cy.visit(ROUTES.courses);
   }
+
 
   fillEmail(email) {
     cy.log("Ввод почты");
